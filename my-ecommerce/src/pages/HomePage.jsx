@@ -1,11 +1,12 @@
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
-import Slider from "../layout/PageContent";
+import PageContent from "../layout/PageContent";
+
 export default function HomePage() {
   return (
     <>
       <Header />
-      <Slider />
+      <PageContent />
       <Footer />
     </>
   );
