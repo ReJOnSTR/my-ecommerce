@@ -1,9 +1,18 @@
 import { useSelector, useDispatch } from "react-redux";
 import { toggleMenu } from "../store/actions";
+import { useHistory } from "react-router-dom";
 
 const Header = () => {
   const isMenuOpen = useSelector((state) => state.menu.isMenuOpen);
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  const handleNavigation = (path) => {
+    history.push(path);
+    if (isMenuOpen) {
+      dispatch(toggleMenu());
+    }
+  };
 
   return (
     <header className="bg-[#252B42] text-[#FFFFFF] font-bold text-sm font-montserrat">
@@ -25,16 +34,16 @@ const Header = () => {
         <div className="flex items-center gap-4">
           Follow Us :
           <div className="flex gap-4">
-            <a href="">
+            <a href="#">
               <i className="fab fa-instagram"></i>
             </a>
-            <a href="">
+            <a href="#">
               <i className="fab fa-youtube"></i>
             </a>
-            <a href="">
+            <a href="#">
               <i className="fab fa-facebook"></i>
             </a>
-            <a href="">
+            <a href="#">
               <i className="fab fa-twitter"></i>
             </a>
           </div>
@@ -45,24 +54,47 @@ const Header = () => {
       <nav className="bg-white text-gray-800">
         <div className="mx-auto px-8 py-6 flex items-center justify-between max-md:px-4 max-md:py-4">
           <div className="flex items-center gap-32 max-md:w-full max-md:justify-between max-md:gap-0">
-            <div className="text-2xl font-bold">Bandage</div>
+            <div
+              className="text-2xl font-bold cursor-pointer"
+              onClick={() => handleNavigation("/")}
+            >
+              Bandage
+            </div>
             <div className="flex gap-5 items-center text-[#737373] max-md:hidden">
-              <a href="#" className="hover:text-blue-500">
+              <a
+                onClick={() => handleNavigation("/")}
+                className="hover:text-blue-500 cursor-pointer"
+              >
                 Home
               </a>
-              <a href="#" className="hover:text-blue-500">
+              <a
+                onClick={() => handleNavigation("/shop")}
+                className="hover:text-blue-500 cursor-pointer"
+              >
                 Shop
               </a>
-              <a href="#" className="hover:text-blue-500">
+              <a
+                onClick={() => handleNavigation("/about")}
+                className="hover:text-blue-500 cursor-pointer"
+              >
                 About
               </a>
-              <a href="#" className="hover:text-blue-500">
+              <a
+                onClick={() => handleNavigation("/blog")}
+                className="hover:text-blue-500 cursor-pointer"
+              >
                 Blog
               </a>
-              <a href="#" className="hover:text-blue-500">
+              <a
+                onClick={() => handleNavigation("/contact")}
+                className="hover:text-blue-500 cursor-pointer"
+              >
                 Contact
               </a>
-              <a href="#" className="hover:text-blue-500">
+              <a
+                onClick={() => handleNavigation("/pages")}
+                className="hover:text-blue-500 cursor-pointer"
+              >
                 Pages
               </a>
             </div>
@@ -94,22 +126,40 @@ const Header = () => {
           } md:hidden px-4 py-2 bg-white`}
         >
           <div className="flex flex-col gap-7 text-[#737373] justify-center items-center text-3xl font-normal py-20">
-            <a href="#" className="hover:text-blue-500">
+            <a
+              onClick={() => handleNavigation("/")}
+              className="hover:text-blue-500 cursor-pointer"
+            >
               Home
             </a>
-            <a href="#" className="hover:text-blue-500">
+            <a
+              onClick={() => handleNavigation("/shop")}
+              className="hover:text-blue-500 cursor-pointer"
+            >
               Shop
             </a>
-            <a href="#" className="hover:text-blue-500">
+            <a
+              onClick={() => handleNavigation("/about")}
+              className="hover:text-blue-500 cursor-pointer"
+            >
               About
             </a>
-            <a href="#" className="hover:text-blue-500">
+            <a
+              onClick={() => handleNavigation("/blog")}
+              className="hover:text-blue-500 cursor-pointer"
+            >
               Blog
             </a>
-            <a href="#" className="hover:text-blue-500">
+            <a
+              onClick={() => handleNavigation("/contact")}
+              className="hover:text-blue-500 cursor-pointer"
+            >
               Contact
             </a>
-            <a href="#" className="hover:text-blue-500">
+            <a
+              onClick={() => handleNavigation("/pages")}
+              className="hover:text-blue-500 cursor-pointer"
+            >
               Pages
             </a>
           </div>
