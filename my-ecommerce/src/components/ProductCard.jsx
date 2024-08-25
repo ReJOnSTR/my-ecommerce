@@ -1,6 +1,9 @@
 /* eslint-disable react/prop-types */
 
+import { Link } from "react-router-dom";
+
 const ProductCard = ({
+  id,
   image,
   category,
   title,
@@ -9,8 +12,9 @@ const ProductCard = ({
   colors,
 }) => {
   return (
-    <a
-      href="#"
+    <Link
+      to={`/product/${id}`}
+      state={{ productImage: image }}
       className="flex flex-col hover:shadow-lg transition-shadow duration-300"
     >
       <img src={image} alt={title} className="w-full h-auto p-1" />
@@ -35,7 +39,7 @@ const ProductCard = ({
           </div>
         )}
       </div>
-    </a>
+    </Link>
   );
 };
 

@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 const NeuralUniverse = () => {
   return (
     <section className="font-montserrat ">
@@ -21,14 +22,14 @@ const NeuralUniverse = () => {
             </p>
             <div className="flex gap-4 flex-col sm:flex-row">
               <a href="#" className="w-full sm:w-auto">
-                <button className="w-full sm:w-auto px-10 py-4 bg-[#2DC071] text-white font-bold">
-                  BUY NOW
-                </button>
+                <Button variant="default" size="sm">
+                  SHOP NOW
+                </Button>
               </a>
               <a href="#" className="w-full sm:w-auto">
-                <button className="w-full sm:w-auto px-10 py-4 border border-[#2DC071] text-[#2DC071] font-bold">
+                <Button variant="outline" size="sm">
                   READ MORE
-                </button>
+                </Button>
               </a>
             </div>
           </div>

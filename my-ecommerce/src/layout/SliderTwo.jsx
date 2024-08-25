@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentSlide } from "../store/actions";
+import { Button } from "@/components/ui/button";
 
 const Slider = () => {
   const currentSlide = useSelector((state) => state.slider.currentSlide);
@@ -62,9 +63,7 @@ const Slider = () => {
               </p>
               <div className="flex justify-center items-center gap-11 text-3xl font-bold max-sm:flex-col">
                 <p>$16.48</p>
-                <button className="px-14 py-5 bg-[#2DC071] text-white text-base font-bold hover:bg-[#1f6b42] transition duration-300 max-md:px-8 max-md:py-3">
-                  {slide.buttonText}
-                </button>
+                <Button variant="default"> {slide.buttonText}</Button>
               </div>
             </div>
           </div>
