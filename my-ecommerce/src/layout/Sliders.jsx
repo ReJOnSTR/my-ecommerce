@@ -15,7 +15,7 @@ const Slider = () => {
         "We know how large objects will act, but things on a small scale.",
       buttonText: "SHOP NOW",
       bgImage:
-        "https://s3-alpha-sig.figma.com/img/96c8/6912/d491d421800e62998b9af7c838cc25d1?Expires=1724630400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=TijyMwsDPqm6NMmI1WQrh4rOrxTm8SlEo4WyC7a-TSXqEqQF8Kanhjzei6elU8M5pCo7Z7LMAgcccoTIPofkZx1bzRVFRq1ul4Sa4u9vtUL6dd2BN4NK-52x74mypXvcguv1NkVQwJtgTc-plWmopfNrK81Xs7qvYhVnBPkjTGBySpOlFHO5r3bgk~42R9tKiSiQwrMJwudwYgyaT5Zy3Cc32TynYh4-SOSX9CYuKeqVlPDHQ5mUEcNQdwK-y~5pYtOjjA5CyehQyoOADXCKCeE-Hta96p0wayEy8g5Uo~UCeboT3DL-085wazZgkXB68ZIlqVApMD8ekNUx1iZSGQ__",
+        "https://s3-alpha-sig.figma.com/img/96c8/6912/d491d421800e62998b9af7c838cc25d1?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Jxoas9HLBww8zrltIq3kYxP97Tm-iaIWVOyZJtASwLiTjOXfbzN-l1EcaJTxW-fm-BD4OC8M1GEJcUoFfMt8ZvaMMiVLjomWr-KsTiU2UsZtwhHSUEk83wKEh7GPt663XwMqoC7DGmXi3DbuMAkZ~6dielaOe0PBYuySF-ISJUiMSdhsiHNBSYlMVPylIFle4rOvx23B2Zn8mhfq94x~mDBVDsNOBhWogiYt8721vef4nDkBLOhrw78Jf3Dz9~FRoiznwEvxQGAuZP~LOJWa0hHTsZGUPAPoRM6Rvaa-Nw8nnBqomel0XWw3N2EuTEZM7w86~qbPcVh2F2hzjR0BVw__",
     },
     {
       subtitle: "SUMMER 2024",
@@ -24,7 +24,7 @@ const Slider = () => {
         "We know how large objects will act, but things on a small scale.",
       buttonText: "SHOP NOW",
       bgImage:
-        "https://s3-alpha-sig.figma.com/img/486a/b752/2a9f4d3d324bd4850a0b71f9ca75ab9f?Expires=1724630400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I7anq0yRHUAio6Fwp0pQYrBpqziTVjY3FdbT0TV-SpZxfPg5RO9s9fZNK0n0ez25lfWY79Mx1oeBVF45sMe9rYJ4kG1BvX84eEy3UfmT~Q3V~vi55ywvtVG9SX0~tSofwpTlpDWANpgKoKGkXmiXDelYOSSzyk1CmABE2kXp4jdL115gJeyGEMvqhHlIPtacjleH7BOVvnCIxTpgVO~4BHc4wOw4xS~16glXCSls--TuOqsos1mBjQKsBfQLVLFTXrwF5RpoBqUGIniABakr1Nc9dKNPDusgAavm-iV1kMIYUL-FbUuTJfFndEmF4aKxAZOwqoxqV2vaAaGqE3f3Sg__",
+        "https://s3-alpha-sig.figma.com/img/486a/b752/2a9f4d3d324bd4850a0b71f9ca75ab9f?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=grCsTP-kHLuVn~69ModSrah2WQWEPbx2m3df7p7ExZthEiW-9bmZDkEJU7JmSui~XBaGC~P~9Uuj8PB0lrPuqFCV1dk~8zjGfONvwph04l9W0QDVbKJzeWY~KamdNcWBI3BbnfvRKRtF0BIpQUQtogie8uzjg896KtRuhN4VS5e~ibGeFxCSgAn3nYricg1wxbwUmt5nyAB8GD-qxqxva96apreKbx1pGlNUasH1o7HLTIrI-4av6IPKbgT6Eo8EJa8FYzbK4vGwRL~xvpUx0lJyCeNtPPN6hACnU87lLqaV7145j9ymokJHlDee3NyKR5bbNTjtIjJn3Lbgsa9k0Q__",
     },
   ];
 
