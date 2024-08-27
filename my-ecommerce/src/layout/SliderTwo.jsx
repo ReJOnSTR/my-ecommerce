@@ -13,8 +13,7 @@ const Slider = () => {
       description:
         "We know how large objects will act, We know how are objects will act, We know",
       buttonText: "ADD TO CART",
-      bgImage:
-        "https://s3-alpha-sig.figma.com/img/b1e6/9a4a/4b78802b0b946cdc179f730a39faddb9?Expires=1724630400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Huty8g0864QG-HGL1wvCLgoqKZM2ALVjVIlV3D31PhmSZeyQOOOavvEzEUPoqW~p6sOBS9jJS-cbu08aaJ8nNbdAgVxM5KfTMPLPI1VSw5M3V6F9V5fJLBm1E~-2m6zk1duEUXQwi7iTh7RV2atO3gCH4dSgt-EiuSo8dVeXNTrlek4mgCGRtSN1jBU~fSEEwageHDvRjwNxXrBYuTUEMXf2M6~GCY7Suk-WK-xaKppaxjgUUyYI-9Sqn39Dfj8Meo~APeAXHXpbl2bUNAmz8KdjZ0nFpnfmpbSeJ2SFVJa4u~~jlFljeM7ISYXGKzZSNNP16BczL0sGjc4hcUZvMw__",
+      bgImage: "https://r.resimlink.com/7-XRez.jpeg",
     },
   ];
 

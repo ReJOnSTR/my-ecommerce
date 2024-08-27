@@ -47,7 +47,7 @@ const Contact = () => {
               {/* Sağ taraf görsel */}
               <div className="w-full sm:w-1/2 relative">
                 <img
-                  src="https://ecommerce-project-liart.vercel.app/assets/ContactHeader-CRrK1ki7.png"
+                  src="https://r.resimlink.com/af6isCc52vdK.png"
                   alt="Happy family shopping"
                   className="w-full h-auto object-cover relative z-10"
                 />
