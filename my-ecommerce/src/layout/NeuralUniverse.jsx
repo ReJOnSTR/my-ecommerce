@@ -6,7 +6,7 @@ const NeuralUniverse = () => {
         <div className="flex flex-col-reverse md:flex-row gap-40 max-sm:gap-10">
           <div className="w-full md:w-1/2 ">
             <img
-              src="https://s3-alpha-sig.figma.com/img/5f8c/e73d/1a41b674cbd12f927c7ea9a6ca0ce76c?Expires=1724630400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I~t~~LhoYAOGSw0MGvKURD3XgVuocySkphESr0TbZCw0iZRXfr~AOc-47aCYN6SHtnCC6l2U9ekqHHrIgMNyJgu3CL4W9K-wXRUcpiV7xBL8izO6u5qc-1ZBmywL2uK2~46JAbQLZhnjlyu84RWF0Mzu~0izWg44aiJTJ8j9fgNMZ10mxCTN-AnIOsFD6CFYDi0GsTOZpDZqCAAbGvac3Gv41Rk4ja01npcGfX-toWmttWALomutImwGJMEF~qfr5XA2JltCScvwzkIVIzlVrqmIjW1q4kXhBbQymMlOg~YN17FYJPi4dpHswJIXq4k99g0JD7fepJC3MZvg3OrGDA__"
+              src="https://r.resimlink.com/mgOJUalrQ9F.png"
               alt="Neural Universe"
               className="w-[966.667px] h-[700px] max-sm:h-[403px] object-cover "
             />

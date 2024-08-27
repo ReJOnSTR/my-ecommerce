@@ -79,23 +79,18 @@ const Header = () => {
               >
                 About
               </a>
+
               <a
-                onClick={() => handleNavigation("/blog")}
+                onClick={() => handleNavigation("/team")}
                 className="hover:text-blue-500 cursor-pointer"
               >
-                Blog
+                Teams
               </a>
               <a
                 onClick={() => handleNavigation("/contact")}
                 className="hover:text-blue-500 cursor-pointer"
               >
                 Contact
-              </a>
-              <a
-                onClick={() => handleNavigation("/pages")}
-                className="hover:text-blue-500 cursor-pointer"
-              >
-                Pages
               </a>
             </div>
             <div className="flex gap-5">
