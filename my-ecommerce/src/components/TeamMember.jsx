@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable react/prop-types */
+
 const TeamMember = ({ image, name, profession, socials }) => {
   return (
     <div className="flex flex-col items-center gap-2 mb-28">

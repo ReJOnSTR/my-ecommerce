@@ -8,7 +8,7 @@ const Contact = () => {
       <Header />
       <main className="font-montserrat">
         <section className="relative bg-white overflow-hidden ">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 max-sm:py-8 ">
             <div className="flex flex-col items-center max-sm:items-start sm:flex-row">
               {/* Sol taraf içerik */}
               <div className="w-full sm:w-1/2 flex flex-col gap-6 sm:gap-9 text-center sm:text-left mb-10 sm:mb-0">
