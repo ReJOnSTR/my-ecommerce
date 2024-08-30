@@ -14,8 +14,7 @@ const Slider = () => {
       description:
         "We know how large objects will act, but things on a small scale.",
       buttonText: "SHOP NOW",
-      bgImage:
-        "https://s3-alpha-sig.figma.com/img/96c8/6912/d491d421800e62998b9af7c838cc25d1?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Jxoas9HLBww8zrltIq3kYxP97Tm-iaIWVOyZJtASwLiTjOXfbzN-l1EcaJTxW-fm-BD4OC8M1GEJcUoFfMt8ZvaMMiVLjomWr-KsTiU2UsZtwhHSUEk83wKEh7GPt663XwMqoC7DGmXi3DbuMAkZ~6dielaOe0PBYuySF-ISJUiMSdhsiHNBSYlMVPylIFle4rOvx23B2Zn8mhfq94x~mDBVDsNOBhWogiYt8721vef4nDkBLOhrw78Jf3Dz9~FRoiznwEvxQGAuZP~LOJWa0hHTsZGUPAPoRM6Rvaa-Nw8nnBqomel0XWw3N2EuTEZM7w86~qbPcVh2F2hzjR0BVw__",
+      bgImage: "./hero/aa.jpeg",
     },
     {
       subtitle: "SUMMER 2024",
