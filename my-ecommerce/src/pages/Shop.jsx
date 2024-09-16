@@ -152,38 +152,31 @@ const Shop = () => {
     <>
       <Header />
       <main className="font-montserrat">
-        <section className="bg-[#FAFAFA]">
-          <div className="container mx-auto py-6 px-4">
-            <div className="flex justify-between items-center flex-wrap gap-4">
+        <section className="mx-auto max-md:w-full max-md:px-4">
+          <div className="bg-[#FAFAFA]">
+            <div className="flex justify-between items-center w-[1400px] mx-auto py-6 max-sm:w-full max-sm:flex-col max-sm:items-center max-sm:gap-2">
               <span className="text-2xl font-bold text-[#252B42]">Shop</span>
-              <div className="flex items-center gap-2 text-sm">
-                <button
-                  onClick={() => history.push("/")}
-                  className="text-[#252B42] font-bold"
-                >
+              <div className="flex items-center gap-2 font-bold text-sm">
+                <a href="/" className="text-[#252B42]">
                   Home
-                </button>
+                </a>
                 <span>
                   <i className="fa-solid fa-chevron-right text-[#BDBDBD]"></i>
                 </span>
-                <button
-                  onClick={() => history.push("/shop")}
-                  className="text-[#BDBDBD] font-bold"
-                >
+                <a href="/shop" className="text-[#BDBDBD]">
                   Shop
-                </button>
+                </a>
               </div>
             </div>
           </div>
-        </section>
 
-        <section className="bg-[#FAFAFA] py-12">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {/* Kategori Kartları */}
+          <div className="bg-[#FAFAFA]">
+            <div className="grid grid-cols-5 gap-4 mb-8 w-[1400px] mx-auto pb-12 max-sm:grid-cols-1 max-sm:w-full max-sm:gap-y-4">
               {categories.map((category, index) => (
                 <div
                   key={index}
-                  className="relative h-64 bg-cover bg-center flex flex-col items-center justify-center text-white"
+                  className="relative h-64 bg-cover bg-center flex flex-col items-center justify-center text-white max-sm:h-[250px] "
                   style={{ backgroundImage: `url(${category.image})` }}
                 >
                   <div className="absolute inset-0 bg-black opacity-20"></div>
@@ -195,58 +188,63 @@ const Shop = () => {
               ))}
             </div>
           </div>
-        </section>
 
-        <section className="py-12">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
-              <p className="text-sm text-[#737373]">
-                Showing all {products.length} results
-              </p>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-[#737373]">Views:</span>
-                  <button className="border p-2 bg-[#23A6F0] text-white">
-                    <i className="fas fa-th"></i>
-                  </button>
-                  <button className="border p-2 text-[#252B42]">
-                    <i className="fas fa-list"></i>
-                  </button>
-                </div>
-                <div className="flex items-center gap-4 max-sm:w-full max-sm:justify-between">
-                  <select className="border p-2 text-[#737373]">
-                    <option>Popularity</option>
-                  </select>
-                  <button className="bg-[#23A6F0] text-white px-4 py-2 max-sm:flex-grow">
-                    Filter
-                  </button>
-                </div>
-              </div>
+          {/* Filtreler ve görünüm seçenekleri */}
+          <div className="flex justify-between items-center mb-8 w-[1400px] mx-auto max-sm:w-full max-sm:flex-col max-sm:items-center max-sm:gap-4">
+            <p className="max-sm:text-xs">Showing all 12 results</p>
+            <div className="flex gap-2 items-center">
+              <span className="max-sm:hidden">Views:</span>
+              <span className="border py-2 px-3">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M8 8H4V4h4zm6-4h-4v4h4zm6 0h-4v4h4zM8 10H4v4h4zm6 0h-4v4h4zm6 0h-4v4h4zM8 16H4v4h4zm6 0h-4v4h4zm6 0h-4v4h4z"
+                  />
+                </svg>
+              </span>
+              <span className="border py-2 px-3">
+                <i className="fa-solid fa-list"></i>
+              </span>
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {products.map((product) => (
-                <ProductCard key={product.id} {...product} />
-              ))}
-            </div>
-
-            <div className="flex justify-center my-12 flex-wrap gap-2">
-              <button className="px-5 py-4 border text-[#23A6F0] hover:bg-[#23A6F0] hover:text-white transition-colors">
-                First
-              </button>
-              <button className="px-4 py-4 border text-[#23A6F0] hover:bg-[#23A6F0] hover:text-white transition-colors">
-                1
-              </button>
-              <button className="px-4 py-4 border bg-[#23A6F0] text-white">
-                2
-              </button>
-              <button className="px-4 py-4 border text-[#23A6F0] hover:bg-[#23A6F0] hover:text-white transition-colors">
-                3
-              </button>
-              <button className="px-5 py-4 border text-[#23A6F0] hover:bg-[#23A6F0] hover:text-white transition-colors">
-                Next
+            <div className="flex items-center gap-4 max-sm:w-full max-sm:justify-between">
+              <select className="border p-2 max-sm:flex-grow">
+                <option>Popularity</option>
+              </select>
+              <button className="bg-[#23A6F0] text-white px-4 py-2 max-sm:flex-grow">
+                Filter
               </button>
             </div>
+          </div>
+
+          {/* Ürün grid'i */}
+          <div className="grid grid-cols-4 gap-8 max-md:grid-cols-2 max-sm:grid-cols-1 w-[1400px] mx-auto max-sm:w-full">
+            {products.map((product, index) => (
+              <ProductCard key={index} {...product} />
+            ))}
+          </div>
+
+          {/* Sayfalama */}
+          <div className="flex justify-center my-12 max-sm:flex-wrap max-sm:gap-2">
+            <button className="px-5 py-4 border max-sm:px-3 max-sm:py-2 max-sm:text-sm">
+              First
+            </button>
+            <button className="px-4 py-4 border max-sm:px-3 max-sm:py-2 max-sm:text-sm">
+              1
+            </button>
+            <button className="px-4 py-4 border bg-[#23A6F0] text-white max-sm:px-3 max-sm:py-2 max-sm:text-sm">
+              2
+            </button>
+            <button className="px-4 py-4 border max-sm:px-3 max-sm:py-2 max-sm:text-sm">
+              3
+            </button>
+            <button className="px-5 py-4 border max-sm:px-3 max-sm:py-2 max-sm:text-sm">
+              Next
+            </button>
           </div>
         </section>
 

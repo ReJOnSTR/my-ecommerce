@@ -19,7 +19,7 @@ const Slider = () => {
       description:
         "We know how large objects will act, but things on a small scale.",
       buttonText: "SHOP NOW",
-      bgImage: "/hero/cc.png",
+      bgImage: "/hero/bb.png",
     },
   ];
 

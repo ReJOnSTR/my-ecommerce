@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
-const Slider = () => {
+const SliderTwo = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
@@ -11,7 +11,7 @@ const Slider = () => {
       description:
         "We know how large objects will act, but things on a small scale.",
       buttonText: "SHOP NOW",
-      bgImage: "/hero/bb.jpeg",
+      bgImage: "/hero/cc.jpeg",
     },
   ];
 
@@ -95,4 +95,4 @@ const Slider = () => {
   );
 };
 
-export default Slider;
+export default SliderTwo;

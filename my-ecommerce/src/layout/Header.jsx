@@ -111,15 +111,7 @@ const Header = () => {
           } md:hidden px-4 py-2 bg-white`}
         >
           <div className="flex flex-col gap-7 text-[#737373] justify-center items-center text-3xl font-normal py-20">
-            {[
-              "Home",
-              "Shop",
-              "About",
-              "Team",
-              "Contact",
-              "Login",
-              "Register",
-            ].map((item) => (
+            {["Home", "Shop", "About", "Team", "Contact"].map((item) => (
               <a
                 key={item}
                 onClick={() =>

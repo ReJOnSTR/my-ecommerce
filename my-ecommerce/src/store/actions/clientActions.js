@@ -15,10 +15,7 @@ export const fetchRoles = () => {
   return (dispatch, getState) => {
     const state = getState();
     if (state.client.roles.length === 0) {
-      return fetch("/api/roles")
-        .then((response) => response.json())
-        .then((roles) => dispatch(setRoles(roles)))
-        .catch((error) => console.error("Error fetching roles:", error));
+      // Fetch roles logic here
     }
   };
 };
