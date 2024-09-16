@@ -1,11 +1,8 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setCurrentSlide } from "../store/actions";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 const Slider = () => {
-  const currentSlide = useSelector((state) => state.slider.currentSlide);
-  const dispatch = useDispatch();
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
     {
@@ -14,7 +11,7 @@ const Slider = () => {
       description:
         "We know how large objects will act, but things on a small scale.",
       buttonText: "SHOP NOW",
-      bgImage: "./hero/aa.jpeg",
+      bgImage: "/hero/aa.jpeg",
     },
     {
       subtitle: "SUMMER 2024",
@@ -22,26 +19,25 @@ const Slider = () => {
       description:
         "We know how large objects will act, but things on a small scale.",
       buttonText: "SHOP NOW",
-      bgImage:
-        "https://s3-alpha-sig.figma.com/img/486a/b752/2a9f4d3d324bd4850a0b71f9ca75ab9f?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=grCsTP-kHLuVn~69ModSrah2WQWEPbx2m3df7p7ExZthEiW-9bmZDkEJU7JmSui~XBaGC~P~9Uuj8PB0lrPuqFCV1dk~8zjGfONvwph04l9W0QDVbKJzeWY~KamdNcWBI3BbnfvRKRtF0BIpQUQtogie8uzjg896KtRuhN4VS5e~ibGeFxCSgAn3nYricg1wxbwUmt5nyAB8GD-qxqxva96apreKbx1pGlNUasH1o7HLTIrI-4av6IPKbgT6Eo8EJa8FYzbK4vGwRL~xvpUx0lJyCeNtPPN6hACnU87lLqaV7145j9ymokJHlDee3NyKR5bbNTjtIjJn3Lbgsa9k0Q__",
+      bgImage: "/hero/bb.png",
     },
   ];
 
   useEffect(() => {
     const timer = setInterval(() => {
-      dispatch(setCurrentSlide((currentSlide + 1) % slides.length));
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [currentSlide, dispatch, slides.length]);
+  }, [slides.length]);
 
   const nextSlide = () => {
-    dispatch(setCurrentSlide((currentSlide + 1) % slides.length));
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
   };
 
   const prevSlide = () => {
-    dispatch(
-      setCurrentSlide((currentSlide - 1 + slides.length) % slides.length)
+    setCurrentSlide((prevSlide) =>
+      prevSlide === 0 ? slides.length - 1 : prevSlide - 1
     );
   };
 
@@ -99,7 +95,7 @@ const Slider = () => {
             className={`w-20 h-[10px] ${
               index === currentSlide ? "bg-white" : "bg-white opacity-50"
             } max-md:w-12 max-md:h-[3px]`}
-            onClick={() => dispatch(setCurrentSlide(index))}
+            onClick={() => setCurrentSlide(index)}
           />
         ))}
       </div>
