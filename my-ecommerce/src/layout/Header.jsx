@@ -1,19 +1,17 @@
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleMenu } from "../store/actions";
 import { useHistory } from "react-router-dom";
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isMenuOpen = useSelector((state) => state.menu.isMenuOpen);
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const handleNavigation = (path) => {
     history.push(path);
     if (isMenuOpen) {
-      setIsMenuOpen(false);
+      dispatch(toggleMenu());
     }
-  };
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
   };
 
   return (
@@ -34,7 +32,7 @@ const Header = () => {
         </div>
         <span>Follow Us and get a chance to win 80% off</span>
         <div className="flex items-center gap-4">
-          Follow Us:
+          Follow Us :
           <div className="flex gap-4">
             <a href="#">
               <i className="fab fa-instagram"></i>
@@ -63,15 +61,37 @@ const Header = () => {
               Bandage
             </div>
             <div className="flex gap-5 items-center text-[#737373] max-md:hidden">
-              {["Home", "Shop", "About", "Team", "Contact"].map((item) => (
-                <a
-                  key={item}
-                  onClick={() => handleNavigation(`/${item.toLowerCase()}`)}
-                  className="hover:text-blue-500 cursor-pointer"
-                >
-                  {item}
-                </a>
-              ))}
+              <a
+                onClick={() => handleNavigation("/")}
+                className="hover:text-blue-500 cursor-pointer"
+              >
+                Home
+              </a>
+              <a
+                onClick={() => handleNavigation("/shop")}
+                className="hover:text-blue-500 cursor-pointer"
+              >
+                Shop
+              </a>
+              <a
+                onClick={() => handleNavigation("/about")}
+                className="hover:text-blue-500 cursor-pointer"
+              >
+                About
+              </a>
+
+              <a
+                onClick={() => handleNavigation("/team")}
+                className="hover:text-blue-500 cursor-pointer"
+              >
+                Teams
+              </a>
+              <a
+                onClick={() => handleNavigation("/contact")}
+                className="hover:text-blue-500 cursor-pointer"
+              >
+                Contact
+              </a>
             </div>
             <div className="flex gap-5">
               <i className="fas fa-search hidden max-md:block text-xl"></i>
@@ -79,25 +99,15 @@ const Header = () => {
               <i className="fa-solid fa-user hidden max-md:block text-xl"></i>
               <button
                 className="hidden max-md:block text-xl"
-                onClick={toggleMenu}
+                onClick={() => dispatch(toggleMenu())}
               >
                 ☰
               </button>
             </div>
           </div>
           <div className="flex items-center gap-5 max-md:hidden">
-            <a
-              onClick={() => handleNavigation("/login")}
-              className="text-[#23A6F0] hover:underline cursor-pointer"
-            >
-              Login
-            </a>
-            <span className="text-[#23A6F0]">/</span>
-            <a
-              onClick={() => handleNavigation("/signup")}
-              className="text-[#23A6F0] hover:underline cursor-pointer"
-            >
-              Register
+            <a href="#" className="text-[#23A6F0] hover:underline">
+              Login / Register
             </a>
             <i className="fas fa-search text-sm text-[#23A6F0]"></i>
             <i className="fas fa-shopping-cart text-sm text-[#23A6F0]"></i>
@@ -111,31 +121,36 @@ const Header = () => {
           } md:hidden px-4 py-2 bg-white`}
         >
           <div className="flex flex-col gap-7 text-[#737373] justify-center items-center text-3xl font-normal py-20">
-            {[
-              "Home",
-              "Shop",
-              "About",
-              "Team",
-              "Contact",
-              "Login",
-              "Register",
-            ].map((item) => (
-              <a
-                key={item}
-                onClick={() =>
-                  handleNavigation(
-                    item === "Register"
-                      ? "/signup"
-                      : item === "Login"
-                      ? "/login"
-                      : `/${item.toLowerCase()}`
-                  )
-                }
-                className="hover:text-blue-500 cursor-pointer"
-              >
-                {item}
-              </a>
-            ))}
+            <a
+              onClick={() => handleNavigation("/")}
+              className="hover:text-blue-500 cursor-pointer"
+            >
+              Home
+            </a>
+            <a
+              onClick={() => handleNavigation("/shop")}
+              className="hover:text-blue-500 cursor-pointer"
+            >
+              Shop
+            </a>
+            <a
+              onClick={() => handleNavigation("/about")}
+              className="hover:text-blue-500 cursor-pointer"
+            >
+              About
+            </a>
+            <a
+              onClick={() => handleNavigation("/team")}
+              className="hover:text-blue-500 cursor-pointer"
+            >
+              Teams
+            </a>
+            <a
+              onClick={() => handleNavigation("/contact")}
+              className="hover:text-blue-500 cursor-pointer"
+            >
+              Contact
+            </a>
           </div>
         </div>
       </nav>

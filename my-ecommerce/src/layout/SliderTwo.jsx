@@ -1,38 +1,39 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setCurrentSlide } from "../store/actions";
 import { Button } from "@/components/ui/button";
 
 const Slider = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
+  const currentSlide = useSelector((state) => state.slider.currentSlide);
+  const dispatch = useDispatch();
   const slides = [
     {
       subtitle: "SUMMER 2024",
-      title: "NEW COLLECTION",
+      title: `Vita Classic  Product`,
       description:
-        "We know how large objects will act, but things on a small scale.",
-      buttonText: "SHOP NOW",
-      bgImage: "/hero/bb.jpeg",
+        "We know how large objects will act, We know how are objects will act, We know",
+      buttonText: "ADD TO CART",
+      bgImage: "https://r.resimlink.com/7-XRez.jpeg",
     },
   ];
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+      dispatch(setCurrentSlide((currentSlide + 1) % slides.length));
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [slides.length]);
+  }, [currentSlide, dispatch, slides.length]);
 
   const nextSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+    dispatch(setCurrentSlide((currentSlide + 1) % slides.length));
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prevSlide) =>
-      prevSlide === 0 ? slides.length - 1 : prevSlide - 1
+    dispatch(
+      setCurrentSlide((currentSlide - 1 + slides.length) % slides.length)
     );
   };
-
   return (
     <div className="relative w-full h-screen overflow-hidden font-montserrat">
       {slides.map((slide, index) => (
@@ -53,19 +54,22 @@ const Slider = () => {
               <p className="text-xl font-bold mb-9 max-md:text-base max-md:mb-4">
                 {slide.subtitle}
               </p>
-              <p className="text-7xl font-bold mb-9 leading-tight max-md:text-4xl max-md:mb-4">
+              <p className="text-7xl font-bold mb-9 leading-tight max-md:text-4xl max-md:mb-4 ">
                 {slide.title}
               </p>
               <p className="text-2xl font-normal mb-9 max-w-md max-md:text-base max-md:mb-4">
                 {slide.description}
               </p>
-              <Button variant="default">{slide.buttonText}</Button>
+              <div className="flex justify-center items-center gap-11 text-3xl font-bold max-sm:flex-col">
+                <p>$16.48</p>
+                <Button variant="default"> {slide.buttonText}</Button>
+              </div>
             </div>
           </div>
         </div>
       ))}
 
-      {/* Yön Okları */}
+      {/* Yön Okları - */}
       <button
         onClick={prevSlide}
         className="absolute top-1/2 left-4 transform -translate-y-1/2 text-white text-7xl px-8 max-md:pb-7 max-md:px-2 "

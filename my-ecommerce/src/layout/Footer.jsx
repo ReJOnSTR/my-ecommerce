@@ -1,19 +1,19 @@
 const Footer = () => {
   return (
     <footer className="font-montserrat bg-white">
-      <div className="bg-[#FAFAFA] py-10">
-        <div className="container mx-auto px-4 flex justify-between items-center flex-wrap gap-4">
-          <p className="text-2xl font-bold text-[#252B42]">Bandage</p>
-          <div className="flex gap-5">
-            <i className="fab fa-facebook text-[#23A6F0] text-2xl"></i>
-            <i className="fab fa-instagram text-[#23A6F0] text-2xl"></i>
-            <i className="fab fa-twitter text-[#23A6F0] text-2xl"></i>
+      <div className="flex flex-col">
+        <div className="bg-[#FAFAFA] py-10">
+          <div className="w-[1400px] mx-auto flex justify-between items-center max-md:w-full max-md:px-6 max-md:items-start max-md:flex-col max-md:gap-6">
+            <p className="text-2xl font-bold text-[#252B42]">Bandage</p>
+            <div className="flex gap-5">
+              <i className="fab fa-facebook text-blue-600 text-2xl"></i>
+              <i className="fab fa-instagram text-blue-600 text-2xl"></i>
+              <i className="fab fa-twitter text-blue-600 text-2xl"></i>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+        <div className="w-[1400px] mx-auto py-12 grid grid-cols-5 gap-8 max-md:w-full max-md:px-6 max-md:grid-cols-1">
           <div>
             <h3 className="font-bold text-base mb-5 text-[#252B42]">
               Company Info
@@ -96,13 +96,13 @@ const Footer = () => {
             <h3 className="font-bold text-base mb-5 text-[#252B42]">
               Get In Touch
             </h3>
-            <div className="flex">
+            <div className="flex h-12 max-md:h-10">
               <input
                 type="email"
                 placeholder="Your Email"
-                className="p-2 border border-r-0 border-[#E6E6E6] rounded-l-md flex-grow text-sm min-w-0"
+                className="p-2 border border-[#E6E6E6] rounded-l-md flex-grow text-sm"
               />
-              <button className="bg-[#23A6F0] text-white px-4 py-2 rounded-r-md text-sm font-bold whitespace-nowrap">
+              <button className="bg-[#23A6F0] text-white px-4 py-2 rounded-r-md text-sm font-bold">
                 Subscribe
               </button>
             </div>
@@ -111,13 +111,11 @@ const Footer = () => {
             </p>
           </div>
         </div>
-      </div>
 
-      <div className="border-t border-[#E6E6E6]">
-        <div className="container mx-auto px-4 py-6 flex justify-between items-center flex-wrap gap-4">
-          <p className="text-sm text-[#737373]">
+        <div className="bg-[#FAFAFA]">
+          <div className="w-[1400px] mx-auto py-6 text-sm font-bold text-[#737373] max-md:w-full max-md:px-6 max-md:text-center">
             Made With Love By Finland All Right Reserved
-          </p>
+          </div>
         </div>
       </div>
     </footer>
