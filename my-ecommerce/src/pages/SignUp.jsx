@@ -153,7 +153,7 @@ const SignUp = () => {
                     },
                     pattern: {
                       value:
-                        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}$/,
+                        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*.])(?=.*[a-zA-Z]).{8,}$/,
                       message:
                         "Password must include numbers, lowercase, uppercase, and special characters",
                     },

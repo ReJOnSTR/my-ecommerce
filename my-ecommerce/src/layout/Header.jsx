@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { logoutUser } from "../store/actions/clientActions";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const history = useHistory();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.client.user);
 
   const handleNavigation = (path) => {
     history.push(path);
@@ -13,7 +17,12 @@ const Header = () => {
   };
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen(!isMenuOpen); // toggleMenu fonksiyonunu burada kapattım
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    history.push("/");
   };
 
   return (
@@ -24,7 +33,7 @@ const Header = () => {
           <a href="tel:(225) 555-0118" className="flex items-center gap-2">
             <i className="fa-solid fa-phone"></i>(225) 555-0118
           </a>
-          <a
+          <a // `<a>` etiketi eksikti, kapattım
             href="mailto:michelle.rivera@example.com"
             className="flex items-center gap-2"
           >
@@ -64,13 +73,13 @@ const Header = () => {
             </div>
             <div className="flex gap-5 items-center text-[#737373] max-md:hidden">
               {["Home", "Shop", "About", "Team", "Contact"].map((item) => (
-                <a
+                <span
                   key={item}
                   onClick={() => handleNavigation(`/${item.toLowerCase()}`)}
                   className="hover:text-blue-500 cursor-pointer"
                 >
                   {item}
-                </a>
+                </span>
               ))}
             </div>
             <div className="flex gap-5">
@@ -86,19 +95,40 @@ const Header = () => {
             </div>
           </div>
           <div className="flex items-center gap-5 max-md:hidden">
-            <a
-              onClick={() => handleNavigation("/login")}
-              className="text-[#23A6F0] hover:underline cursor-pointer"
-            >
-              Login
-            </a>
-            <span className="text-[#23A6F0]">/</span>
-            <a
-              onClick={() => handleNavigation("/signup")}
-              className="text-[#23A6F0] hover:underline cursor-pointer"
-            >
-              Register
-            </a>
+            {user ? (
+              <>
+                <div className="flex items-center gap-2">
+                  <img
+                    src={user.avatar}
+                    alt={user.name}
+                    className="w-8 h-8 rounded-full"
+                  />
+                  <span className="text-[#23A6F0]">{user.name}</span>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="text-[#23A6F0] hover:underline cursor-pointer"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <span
+                  onClick={() => handleNavigation("/login")}
+                  className="text-[#23A6F0] hover:underline cursor-pointer"
+                >
+                  Login
+                </span>
+                <span className="text-[#23A6F0]">/</span>
+                <span
+                  onClick={() => handleNavigation("/signup")}
+                  className="text-[#23A6F0] hover:underline cursor-pointer"
+                >
+                  Register
+                </span>
+              </>
+            )}
             <i className="fas fa-search text-sm text-[#23A6F0]"></i>
             <i className="fas fa-shopping-cart text-sm text-[#23A6F0]"></i>
             <i className="fas fa-heart text-sm text-[#23A6F0]"></i>
@@ -112,22 +142,40 @@ const Header = () => {
         >
           <div className="flex flex-col gap-7 text-[#737373] justify-center items-center text-3xl font-normal py-20">
             {["Home", "Shop", "About", "Team", "Contact"].map((item) => (
-              <a
+              <span
                 key={item}
-                onClick={() =>
-                  handleNavigation(
-                    item === "Register"
-                      ? "/signup"
-                      : item === "Login"
-                      ? "/login"
-                      : `/${item.toLowerCase()}`
-                  )
-                }
+                onClick={() => handleNavigation(`/${item.toLowerCase()}`)}
                 className="hover:text-blue-500 cursor-pointer"
               >
                 {item}
-              </a>
+              </span>
             ))}
+            {user ? (
+              <>
+                <span className="text-[#23A6F0]">{user.name}</span>
+                <button
+                  onClick={handleLogout}
+                  className="text-[#23A6F0] hover:underline cursor-pointer"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <span
+                  onClick={() => handleNavigation("/login")}
+                  className="text-[#23A6F0] hover:underline cursor-pointer"
+                >
+                  Login
+                </span>
+                <span
+                  onClick={() => handleNavigation("/signup")}
+                  className="text-[#23A6F0] hover:underline cursor-pointer"
+                >
+                  Register
+                </span>
+              </>
+            )}
           </div>
         </div>
       </nav>
