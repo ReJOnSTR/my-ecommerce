@@ -6,6 +6,7 @@ import {
   LOGIN_USER,
   LOGOUT_USER,
   REGISTER_USER,
+  VERIFY_TOKEN,
 } from "../actions/clientActions";
 
 const initialState = {
@@ -20,6 +21,7 @@ export default function clientReducer(state = initialState, action) {
     case SET_USER:
     case LOGIN_USER:
     case REGISTER_USER:
+    case VERIFY_TOKEN:
       return { ...state, user: action.payload };
     case SET_ROLES:
       return { ...state, roles: action.payload };

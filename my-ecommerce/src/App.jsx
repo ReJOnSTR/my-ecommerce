@@ -1,9 +1,14 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { checkAuthStatus } from "./store/actions/clientActions";
+import { verifyToken } from "./store/actions/clientActions";
 
 // Page imports
 import HomePage from "./pages/HomePage";
@@ -19,27 +24,52 @@ import "./App.css";
 
 function App() {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.client.user);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(checkAuthStatus());
+    const verifyUserToken = async () => {
+      await dispatch(verifyToken());
+      setIsLoading(false);
+    };
+    verifyUserToken();
   }, [dispatch]);
+
+  if (isLoading) {
+    return; // Veya daha güzel bir yükleme ekranı
+  }
 
   return (
     <Router>
       <ToastContainer />
       <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route exact path="/home" component={HomePage} />
-        <Route exact path="/shop" component={Shop} />
-        <Route path="/product/:id" component={ProductDetail} />
-        <Route path="/contact" component={Contact} />
-        <Route path="/team" component={TeamPage} />
-        <Route path="/about" component={AboutPage} />
-        <Route path="/login" component={LoginPage} />
+        <Route
+          exact
+          path="/"
+          render={() => (!user ? <Redirect to="/login" /> : <HomePage />)}
+        />
         <Route path="/signup" component={SignUpPage} />
+        <Route path="/login" component={LoginPage} />
+        <ProtectedRoute path="/shop" component={Shop} />
+        <ProtectedRoute path="/product/:id" component={ProductDetail} />
+        <ProtectedRoute path="/contact" component={Contact} />
+        <ProtectedRoute path="/team" component={TeamPage} />
+        <ProtectedRoute path="/about" component={AboutPage} />
       </Switch>
     </Router>
   );
 }
+
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+  const user = useSelector((state) => state.client.user);
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        user ? <Component {...props} /> : <Redirect to="/login" />
+      }
+    />
+  );
+};
 
 export default App;

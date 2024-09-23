@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../store/actions/clientActions";
 import Header from "../layout/Header";
@@ -8,7 +8,6 @@ import Footer from "../layout/Footer";
 
 const LoginPage = () => {
   const history = useHistory();
-  const location = useLocation();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -23,8 +22,7 @@ const LoginPage = () => {
     setIsLoading(true);
     try {
       await dispatch(loginUser(data));
-      const { from } = location.state || { from: { pathname: "/" } };
-      history.replace(from);
+      history.push("/");
     } catch (error) {
       console.error("Login error:", error);
     } finally {
