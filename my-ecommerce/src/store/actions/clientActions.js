@@ -10,6 +10,7 @@ export const SET_LANGUAGE = "SET_LANGUAGE";
 export const LOGIN_USER = "LOGIN_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
 export const REGISTER_USER = "REGISTER_USER";
+export const VERIFY_TOKEN = "VERIFY_TOKEN";
 
 // API configuration
 const api = axios.create({
@@ -57,10 +58,7 @@ export const loginUser = (credentials) => {
     try {
       const response = await api.post("/login", credentials);
       const userData = {
-        token: response.data.token,
-        name: response.data.name,
-        email: response.data.email,
-        role_id: response.data.role_id,
+        ...response.data,
         avatar: `https://www.gravatar.com/avatar/${md5(
           response.data.email
         )}?d=identicon`,
@@ -68,19 +66,15 @@ export const loginUser = (credentials) => {
 
       dispatch({ type: LOGIN_USER, payload: userData });
 
-      // Remember me özelliği için token'ı kaydet
       if (credentials.rememberMe) {
         localStorage.setItem("token", userData.token);
         localStorage.setItem("user", JSON.stringify(userData));
-        console.log("User remembered:", userData); // Kontrol amaçlı log
       } else {
-        // Remember me işaretlenmemişse, session storage'a kaydet
         sessionStorage.setItem("token", userData.token);
         sessionStorage.setItem("user", JSON.stringify(userData));
-        console.log("User stored in session:", userData); // Kontrol amaçlı log
       }
 
-      api.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
+      api.defaults.headers.common["Authorization"] = userData.token;
 
       toast.success("Login successful!");
       return userData;
@@ -104,29 +98,48 @@ export const logoutUser = () => {
   };
 };
 
-export const checkAuthStatus = () => {
-  return (dispatch) => {
-    const token =
-      localStorage.getItem("token") || sessionStorage.getItem("token");
-    const savedUser =
-      localStorage.getItem("user") || sessionStorage.getItem("user");
+export const verifyToken = () => async (dispatch) => {
+  const token =
+    localStorage.getItem("token") || sessionStorage.getItem("token");
+  const savedUser = JSON.parse(
+    localStorage.getItem("user") || sessionStorage.getItem("user") || "{}"
+  );
 
-    if (token && savedUser) {
-      try {
-        const user = JSON.parse(savedUser);
-        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        dispatch(setUser(user));
-        console.log("Restored user session:", user); // Kontrol amaçlı log
-      } catch (error) {
-        console.error("Auth check failed:", error);
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        sessionStorage.removeItem("token");
-        sessionStorage.removeItem("user");
-        delete api.defaults.headers.common["Authorization"];
+  if (token) {
+    try {
+      api.defaults.headers.common["Authorization"] = token;
+      const response = await api.get("/verify");
+      const userData = {
+        ...response.data,
+        token: token,
+        avatar:
+          savedUser.avatar ||
+          `https://www.gravatar.com/avatar/${md5(
+            response.data.email
+          )}?d=identicon`,
+      };
+      dispatch({ type: VERIFY_TOKEN, payload: userData });
+
+      // Update stored user data
+      if (localStorage.getItem("token")) {
+        localStorage.setItem("user", JSON.stringify(userData));
+      } else {
+        sessionStorage.setItem("user", JSON.stringify(userData));
       }
+
+      return userData;
+    } catch (error) {
+      console.error("Token verification failed:", error);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("user");
+      delete api.defaults.headers.common["Authorization"];
+      dispatch({ type: LOGOUT_USER });
     }
-  };
+  } else {
+    dispatch({ type: LOGOUT_USER });
+  }
 };
 
 export default api;
