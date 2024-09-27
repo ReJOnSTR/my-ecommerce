@@ -1,29 +1,64 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { logoutUser } from "../store/actions/clientActions";
+import { fetchCategories } from "../store/actions/productActions";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.client.user);
+  const categories = useSelector((state) => state.product.categories);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   const handleNavigation = (path) => {
     history.push(path);
     if (isMenuOpen) {
       setIsMenuOpen(false);
     }
+    setIsCategoryMenuOpen(false);
   };
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen); // toggleMenu fonksiyonunu burada kapattım
+    setIsMenuOpen(!isMenuOpen);
   };
 
   const handleLogout = () => {
     dispatch(logoutUser());
     history.push("/");
   };
+
+  const groupAndSortCategories = () => {
+    const grouped = { women: [], men: [] };
+    const allCategories = new Set();
+
+    categories.forEach((category) => {
+      if (category.gender === "k") {
+        grouped.women.push(category);
+      } else if (category.gender === "e") {
+        grouped.men.push(category);
+      }
+      allCategories.add(category.title);
+    });
+
+    const sortedCategories = Array.from(allCategories).sort();
+
+    return {
+      women: sortedCategories
+        .map((title) => grouped.women.find((cat) => cat.title === title))
+        .filter(Boolean),
+      men: sortedCategories
+        .map((title) => grouped.men.find((cat) => cat.title === title))
+        .filter(Boolean),
+    };
+  };
+
+  const groupedCategories = groupAndSortCategories();
 
   return (
     <header className="bg-[#252B42] text-[#FFFFFF] font-bold text-sm font-montserrat">
@@ -33,7 +68,7 @@ const Header = () => {
           <a href="tel:(225) 555-0118" className="flex items-center gap-2">
             <i className="fa-solid fa-phone"></i>(225) 555-0118
           </a>
-          <a // `<a>` etiketi eksikti, kapattım
+          <a
             href="mailto:michelle.rivera@example.com"
             className="flex items-center gap-2"
           >
@@ -72,7 +107,65 @@ const Header = () => {
               Bandage
             </div>
             <div className="flex gap-5 items-center text-[#737373] max-md:hidden">
-              {["Home", "Shop", "About", "Team", "Contact"].map((item) => (
+              <span
+                onClick={() => handleNavigation("/")}
+                className="hover:text-blue-500 cursor-pointer"
+              >
+                Home
+              </span>
+              <div
+                className="relative group"
+                onMouseEnter={() => setIsCategoryMenuOpen(true)}
+                onMouseLeave={() => setIsCategoryMenuOpen(false)}
+              >
+                <span className="hover:text-blue-500 cursor-pointer flex items-center">
+                  Shop
+                  <i className="fas fa-chevron-down ml-1 text-xs"></i>
+                </span>
+                {isCategoryMenuOpen && (
+                  <div className="absolute top-full left-0 bg-white shadow-lg rounded-md py-4 z-20 w-[600px]">
+                    <div className="flex">
+                      <div className="w-1/2 border-r border-gray-200">
+                        <h3 className="px-6 py-2 font-bold text-lg text-[#252B42]">
+                          Women
+                        </h3>
+                        <div className="mt-2">
+                          {groupedCategories.women.map((category) => (
+                            <div
+                              key={category.id}
+                              className="px-6 py-2 hover:bg-gray-100 cursor-pointer text-[#737373] transition duration-300"
+                              onClick={() =>
+                                handleNavigation(`/shop/k/${category.code}`)
+                              }
+                            >
+                              {category.title}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="w-1/2">
+                        <h3 className="px-6 py-2 font-bold text-lg text-[#252B42]">
+                          Men
+                        </h3>
+                        <div className="mt-2">
+                          {groupedCategories.men.map((category) => (
+                            <div
+                              key={category.id}
+                              className="px-6 py-2 hover:bg-gray-100 cursor-pointer text-[#737373] transition duration-300"
+                              onClick={() =>
+                                handleNavigation(`/shop/e/${category.code}`)
+                              }
+                            >
+                              {category.title}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              {["About", "Team", "Contact"].map((item) => (
                 <span
                   key={item}
                   onClick={() => handleNavigation(`/${item.toLowerCase()}`)}
