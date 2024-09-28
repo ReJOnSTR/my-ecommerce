@@ -16,6 +16,9 @@ const Shop = () => {
   const categories = useSelector((state) => state.product.categories);
   const products = useSelector((state) => state.product.productList);
   const total = useSelector((state) => state.product.total);
+  const productFetchState = useSelector(
+    (state) => state.product.productFetchState
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState("popularity");
   const productsPerPage = 12;
@@ -78,6 +81,9 @@ const Shop = () => {
                   <span className="relative z-10 text-lg font-bold mb-2">
                     {category.title}
                   </span>
+                  <span className="relative z-10">
+                    {category.rating} Rating
+                  </span>
                 </Link>
               ))}
             </div>
@@ -86,7 +92,9 @@ const Shop = () => {
           {/* Filtreler ve görünüm seçenekleri */}
           <div className="flex justify-between items-center mb-8 w-[1400px] mx-auto max-sm:w-full max-sm:flex-col max-sm:items-center max-sm:gap-4">
             <p className="max-sm:text-xs">
-              Showing all {products.length} results
+              {productFetchState === "FETCHED"
+                ? `Showing ${products.length} of ${total} results`
+                : "Loading products..."}
             </p>
             <div className="flex gap-2 items-center">
               <span className="max-sm:hidden">Views:</span>
@@ -125,46 +133,69 @@ const Shop = () => {
           </div>
 
           {/* Ürün grid'i */}
-          <div className="grid grid-cols-4 gap-8 max-md:grid-cols-2 max-sm:grid-cols-1 w-[1400px] mx-auto max-sm:w-full">
-            {products.map((product) => (
-              <ProductCard key={product.id} {...product} />
-            ))}
-          </div>
+          {productFetchState === "FETCHING" ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-4 gap-8 max-md:grid-cols-2 max-sm:grid-cols-1 w-[1400px] mx-auto max-sm:w-full">
+              {products.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  image={
+                    product.images && product.images.length > 0
+                      ? product.images[0]
+                      : ""
+                  }
+                  category={product.category_title}
+                  title={product.name}
+                  description={product.description}
+                  price={product.price}
+                  discountedPrice={product.discount_price}
+                />
+              ))}
+            </div>
+          )}
 
           {/* Sayfalama */}
-          <div className="flex justify-center my-12 max-sm:flex-wrap max-sm:gap-2">
-            <button
-              className="px-5 py-4 border max-sm:px-3 max-sm:py-2 max-sm:text-sm"
-              onClick={() => setCurrentPage(1)}
-              disabled={currentPage === 1}
-            >
-              First
-            </button>
-            <button
-              className="px-4 py-4 border max-sm:px-3 max-sm:py-2 max-sm:text-sm"
-              onClick={() => setCurrentPage(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            <button className="px-4 py-4 border bg-[#23A6F0] text-white max-sm:px-3 max-sm:py-2 max-sm:text-sm">
-              {currentPage}
-            </button>
-            <button
-              className="px-4 py-4 border max-sm:px-3 max-sm:py-2 max-sm:text-sm"
-              onClick={() => setCurrentPage(currentPage + 1)}
-              disabled={currentPage === Math.ceil(total / productsPerPage)}
-            >
-              Next
-            </button>
-            <button
-              className="px-5 py-4 border max-sm:px-3 max-sm:py-2 max-sm:text-sm"
-              onClick={() => setCurrentPage(Math.ceil(total / productsPerPage))}
-              disabled={currentPage === Math.ceil(total / productsPerPage)}
-            >
-              Last
-            </button>
-          </div>
+          {productFetchState === "FETCHED" && (
+            <div className="flex justify-center my-12 max-sm:flex-wrap max-sm:gap-2">
+              <button
+                className="px-5 py-4 border max-sm:px-3 max-sm:py-2 max-sm:text-sm"
+                onClick={() => setCurrentPage(1)}
+                disabled={currentPage === 1}
+              >
+                First
+              </button>
+              <button
+                className="px-4 py-4 border max-sm:px-3 max-sm:py-2 max-sm:text-sm"
+                onClick={() => setCurrentPage(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+              <button className="px-4 py-4 border bg-[#23A6F0] text-white max-sm:px-3 max-sm:py-2 max-sm:text-sm">
+                {currentPage}
+              </button>
+              <button
+                className="px-4 py-4 border max-sm:px-3 max-sm:py-2 max-sm:text-sm"
+                onClick={() => setCurrentPage(currentPage + 1)}
+                disabled={currentPage === Math.ceil(total / productsPerPage)}
+              >
+                Next
+              </button>
+              <button
+                className="px-5 py-4 border max-sm:px-3 max-sm:py-2 max-sm:text-sm"
+                onClick={() =>
+                  setCurrentPage(Math.ceil(total / productsPerPage))
+                }
+                disabled={currentPage === Math.ceil(total / productsPerPage)}
+              >
+                Last
+              </button>
+            </div>
+          )}
         </section>
 
         <Companies />

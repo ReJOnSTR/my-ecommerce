@@ -9,6 +9,9 @@ import {
   FETCH_CATEGORIES_START,
   FETCH_CATEGORIES_SUCCESS,
   FETCH_CATEGORIES_ERROR,
+  FETCH_PRODUCTS_START,
+  FETCH_PRODUCTS_SUCCESS,
+  FETCH_PRODUCTS_ERROR,
 } from "../actions/productActions";
 
 const initialState = {
@@ -21,6 +24,8 @@ const initialState = {
   fetchState: "NOT_FETCHED",
   categoryFetchState: "NOT_FETCHED",
   categoryError: null,
+  productFetchState: "NOT_FETCHED",
+  productError: null,
 };
 
 export default function productReducer(state = initialState, action) {
@@ -53,6 +58,22 @@ export default function productReducer(state = initialState, action) {
         ...state,
         categoryFetchState: "ERROR",
         categoryError: action.payload,
+      };
+    case FETCH_PRODUCTS_START:
+      return { ...state, productFetchState: "FETCHING" };
+    case FETCH_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        productList: action.payload.products,
+        total: action.payload.total,
+        productFetchState: "FETCHED",
+        productError: null,
+      };
+    case FETCH_PRODUCTS_ERROR:
+      return {
+        ...state,
+        productFetchState: "ERROR",
+        productError: action.payload,
       };
     default:
       return state;
