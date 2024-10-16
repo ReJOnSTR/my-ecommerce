@@ -24,6 +24,12 @@ const Header = () => {
     setIsCategoryMenuOpen(false);
   };
 
+  const handleCategoryClick = (gender, categoryName, categoryId) => {
+    handleNavigation(
+      `/shop/${gender}/${categoryName.toLowerCase()}/${categoryId}`
+    );
+  };
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -33,32 +39,19 @@ const Header = () => {
     history.push("/");
   };
 
-  const groupAndSortCategories = () => {
-    const grouped = { women: [], men: [] };
-    const allCategories = new Set();
-
+  const groupCategories = () => {
+    const grouped = { k: [], e: [] };
     categories.forEach((category) => {
       if (category.gender === "k") {
-        grouped.women.push(category);
+        grouped.k.push(category);
       } else if (category.gender === "e") {
-        grouped.men.push(category);
+        grouped.e.push(category);
       }
-      allCategories.add(category.title);
     });
-
-    const sortedCategories = Array.from(allCategories).sort();
-
-    return {
-      women: sortedCategories
-        .map((title) => grouped.women.find((cat) => cat.title === title))
-        .filter(Boolean),
-      men: sortedCategories
-        .map((title) => grouped.men.find((cat) => cat.title === title))
-        .filter(Boolean),
-    };
+    return grouped;
   };
 
-  const groupedCategories = groupAndSortCategories();
+  const groupedCategories = groupCategories();
 
   return (
     <header className="bg-[#252B42] text-[#FFFFFF] font-bold text-sm font-montserrat">
@@ -118,7 +111,10 @@ const Header = () => {
                 onMouseEnter={() => setIsCategoryMenuOpen(true)}
                 onMouseLeave={() => setIsCategoryMenuOpen(false)}
               >
-                <span className="hover:text-blue-500 cursor-pointer flex items-center">
+                <span
+                  onClick={() => handleNavigation("/shop")}
+                  className="hover:text-blue-500 cursor-pointer flex items-center"
+                >
                   Shop
                   <i className="fas fa-chevron-down ml-1 text-xs"></i>
                 </span>
@@ -130,12 +126,16 @@ const Header = () => {
                           Women
                         </h3>
                         <div className="mt-2">
-                          {groupedCategories.women.map((category) => (
+                          {groupedCategories.k.map((category) => (
                             <div
                               key={category.id}
                               className="px-6 py-2 hover:bg-gray-100 cursor-pointer text-[#737373] transition duration-300"
                               onClick={() =>
-                                handleNavigation(`/shop/k/${category.code}`)
+                                handleCategoryClick(
+                                  "kadin",
+                                  category.title,
+                                  category.id
+                                )
                               }
                             >
                               {category.title}
@@ -146,14 +146,18 @@ const Header = () => {
                       <div className="w-1/2">
                         <h3 className="px-6 py-2 font-bold text-lg text-[#252B42]">
                           Men
-                        </h3>
+                        </h3>{" "}
                         <div className="mt-2">
-                          {groupedCategories.men.map((category) => (
+                          {groupedCategories.e.map((category) => (
                             <div
                               key={category.id}
                               className="px-6 py-2 hover:bg-gray-100 cursor-pointer text-[#737373] transition duration-300"
                               onClick={() =>
-                                handleNavigation(`/shop/e/${category.code}`)
+                                handleCategoryClick(
+                                  "erkek",
+                                  category.title,
+                                  category.id
+                                )
                               }
                             >
                               {category.title}

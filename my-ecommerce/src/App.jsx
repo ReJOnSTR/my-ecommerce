@@ -50,7 +50,11 @@ function App() {
         />
         <Route path="/signup" component={SignUpPage} />
         <Route path="/login" component={LoginPage} />
-        <ProtectedRoute path="/shop" component={Shop} />
+        <Route exact path="/shop" component={Shop} />
+        <Route
+          path="/shop/:gender/:categoryName/:categoryId"
+          component={Shop}
+        />
         <ProtectedRoute path="/product/:id" component={ProductDetail} />
         <ProtectedRoute path="/contact" component={Contact} />
         <ProtectedRoute path="/team" component={TeamPage} />

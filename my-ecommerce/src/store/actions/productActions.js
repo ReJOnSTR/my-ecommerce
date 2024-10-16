@@ -4,8 +4,8 @@ export const SET_CATEGORIES = "SET_CATEGORIES";
 export const SET_PRODUCT_LIST = "SET_PRODUCT_LIST";
 export const SET_TOTAL = "SET_TOTAL";
 export const SET_FETCH_STATE = "SET_FETCH_STATE";
-export const SET_LIMIT = "SET_LIMIT";
-export const SET_OFFSET = "SET_OFFSET";
+export const SET_CATEGORY = "SET_CATEGORY";
+export const SET_SORT = "SET_SORT";
 export const SET_FILTER = "SET_FILTER";
 export const FETCH_CATEGORIES_START = "FETCH_CATEGORIES_START";
 export const FETCH_CATEGORIES_SUCCESS = "FETCH_CATEGORIES_SUCCESS";
@@ -27,8 +27,11 @@ export const setFetchState = (state) => ({
   type: SET_FETCH_STATE,
   payload: state,
 });
-export const setLimit = (limit) => ({ type: SET_LIMIT, payload: limit });
-export const setOffset = (offset) => ({ type: SET_OFFSET, payload: offset });
+export const setCategory = (category) => ({
+  type: SET_CATEGORY,
+  payload: category,
+});
+export const setSort = (sort) => ({ type: SET_SORT, payload: sort });
 export const setFilter = (filter) => ({ type: SET_FILTER, payload: filter });
 
 export const fetchCategoriesStart = () => ({ type: FETCH_CATEGORIES_START });
@@ -64,10 +67,19 @@ export const fetchCategories = () => {
 };
 
 export const fetchProducts = (params) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch(fetchProductsStart());
     try {
-      const response = await api.get("/products", { params });
+      const state = getState().product;
+      const queryParams = new URLSearchParams(
+        Object.entries({
+          category: state.category,
+          sort: state.sort,
+          filter: state.filter,
+          ...params,
+        }).filter(([, value]) => value != null)
+      ).toString();
+      const response = await api.get(`/products?${queryParams}`);
       dispatch(
         fetchProductsSuccess(response.data.products, response.data.total)
       );
