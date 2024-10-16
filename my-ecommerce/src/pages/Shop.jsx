@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useHistory, useLocation } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
@@ -8,19 +8,26 @@ import Companies from "../layout/Companies";
 import {
   fetchCategories,
   fetchProducts,
+  setCategory,
+  setSort,
+  setFilter,
 } from "../store/actions/productActions";
 
 const Shop = () => {
   const dispatch = useDispatch();
-  const { gender, category } = useParams();
+  const history = useHistory();
+  const location = useLocation();
+  const { gender, categoryName, categoryId } = useParams();
   const categories = useSelector((state) => state.product.categories);
   const products = useSelector((state) => state.product.productList);
   const total = useSelector((state) => state.product.total);
   const productFetchState = useSelector(
     (state) => state.product.productFetchState
   );
+  const currentSort = useSelector((state) => state.product.sort);
+  const currentFilter = useSelector((state) => state.product.filter);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortBy, setSortBy] = useState("popularity");
+  const [localFilter, setLocalFilter] = useState("");
   const productsPerPage = 12;
 
   useEffect(() => {
@@ -28,18 +35,43 @@ const Shop = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    if (location.pathname === "/shop") {
+      dispatch(setCategory(null));
+    } else if (categoryId) {
+      dispatch(setCategory(categoryId));
+    }
+  }, [categoryId, dispatch, location.pathname]);
+
+  useEffect(() => {
     const params = {
-      gender: gender,
-      category: category,
+      category: categoryId || null,
+      gender: gender || null,
+      sort: currentSort,
+      filter: currentFilter,
       offset: (currentPage - 1) * productsPerPage,
       limit: productsPerPage,
-      sortBy: sortBy,
     };
     dispatch(fetchProducts(params));
-  }, [dispatch, gender, category, currentPage, sortBy]);
+  }, [
+    dispatch,
+    gender,
+    categoryId,
+    currentSort,
+    currentFilter,
+    currentPage,
+    location.pathname,
+  ]);
 
   const handleSortChange = (e) => {
-    setSortBy(e.target.value);
+    dispatch(setSort(e.target.value));
+  };
+
+  const handleFilterChange = (e) => {
+    setLocalFilter(e.target.value);
+  };
+
+  const applyFilter = () => {
+    dispatch(setFilter(localFilter));
   };
 
   // Top 5 kategorileri rating'e göre sırala
@@ -63,6 +95,14 @@ const Shop = () => {
                   <i className="fa-solid fa-chevron-right text-[#BDBDBD]"></i>
                 </span>
                 <span className="text-[#BDBDBD]">Shop</span>
+                {categoryName && (
+                  <>
+                    <span>
+                      <i className="fa-solid fa-chevron-right text-[#BDBDBD]"></i>
+                    </span>
+                    <span className="text-[#BDBDBD]">{categoryName}</span>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -73,7 +113,9 @@ const Shop = () => {
               {topCategories.map((category) => (
                 <Link
                   key={category.id}
-                  to={`/shop/${category.gender}/${category.code}`}
+                  to={`/shop/${
+                    category.gender === "k" ? "kadin" : "erkek"
+                  }/${category.title.toLowerCase()}/${category.id}`}
                   className="relative h-64 bg-cover bg-center flex flex-col items-center justify-center text-white max-sm:h-[250px]"
                   style={{ backgroundImage: `url(${category.img})` }}
                 >
@@ -96,37 +138,29 @@ const Shop = () => {
                 ? `Showing ${products.length} of ${total} results`
                 : "Loading products..."}
             </p>
-            <div className="flex gap-2 items-center">
-              <span className="max-sm:hidden">Views:</span>
-              <span className="border py-2 px-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M8 8H4V4h4zm6-4h-4v4h4zm6 0h-4v4h4zM8 10H4v4h4zm6 0h-4v4h4zm6 0h-4v4h4zM8 16H4v4h4zm6 0h-4v4h4zm6 0h-4v4h4z"
-                  />
-                </svg>
-              </span>
-              <span className="border py-2 px-3">
-                <i className="fa-solid fa-list"></i>
-              </span>
-            </div>
             <div className="flex items-center gap-4 max-sm:w-full max-sm:justify-between">
               <select
                 className="border p-2 max-sm:flex-grow"
-                value={sortBy}
+                value={currentSort}
                 onChange={handleSortChange}
               >
-                <option value="popularity">Popularity</option>
-                <option value="price_asc">Price: Low to High</option>
-                <option value="price_desc">Price: High to Low</option>
-                <option value="newest">Newest</option>
+                <option value="">Sort by</option>
+                <option value="price:asc">Price: Low to High</option>
+                <option value="price:desc">Price: High to Low</option>
+                <option value="rating:asc">Rating: Low to High</option>
+                <option value="rating:desc">Rating: High to Low</option>
               </select>
-              <button className="bg-[#23A6F0] text-white px-4 py-2 max-sm:flex-grow">
+              <input
+                type="text"
+                placeholder="Filter products..."
+                value={localFilter}
+                onChange={handleFilterChange}
+                className="border p-2 max-sm:flex-grow"
+              />
+              <button
+                className="bg-[#23A6F0] text-white px-4 py-2 max-sm:flex-grow"
+                onClick={applyFilter}
+              >
                 Filter
               </button>
             </div>
