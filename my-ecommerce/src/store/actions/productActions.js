@@ -45,9 +45,9 @@ export const fetchCategoriesError = (error) => ({
 });
 
 export const fetchProductsStart = () => ({ type: FETCH_PRODUCTS_START });
-export const fetchProductsSuccess = (products, total) => ({
+export const fetchProductsSuccess = (products, total, isLoadMore) => ({
   type: FETCH_PRODUCTS_SUCCESS,
-  payload: { products, total },
+  payload: { products, total, isLoadMore },
 });
 export const fetchProductsError = (error) => ({
   type: FETCH_PRODUCTS_ERROR,
@@ -81,7 +81,11 @@ export const fetchProducts = (params) => {
       ).toString();
       const response = await api.get(`/products?${queryParams}`);
       dispatch(
-        fetchProductsSuccess(response.data.products, response.data.total)
+        fetchProductsSuccess(
+          response.data.products,
+          response.data.total,
+          params.offset > 0
+        )
       );
     } catch (error) {
       dispatch(fetchProductsError(error.message));

@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, Link, useHistory, useLocation } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
+import InfiniteScroll from "react-infinite-scroll-component";
 import ProductCard from "../components/ProductCard";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
@@ -11,11 +12,11 @@ import {
   setCategory,
   setSort,
   setFilter,
+  setProductList,
 } from "../store/actions/productActions";
 
 const Shop = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
   const location = useLocation();
   const { gender, categoryName, categoryId } = useParams();
   const categories = useSelector((state) => state.product.categories);
@@ -26,13 +27,26 @@ const Shop = () => {
   );
   const currentSort = useSelector((state) => state.product.sort);
   const currentFilter = useSelector((state) => state.product.filter);
-  const [currentPage, setCurrentPage] = useState(1);
   const [localFilter, setLocalFilter] = useState("");
-  const productsPerPage = 12;
+  const [offset, setOffset] = useState(0);
+  const limit = 25;
 
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
+
+  const fetchMoreProducts = useCallback(() => {
+    const params = {
+      category: categoryId || null,
+      gender: gender || null,
+      sort: currentSort,
+      filter: currentFilter,
+      offset: offset,
+      limit: limit,
+    };
+    dispatch(fetchProducts(params));
+    setOffset((prevOffset) => prevOffset + limit);
+  }, [dispatch, categoryId, gender, currentSort, currentFilter, offset]);
 
   useEffect(() => {
     if (location.pathname === "/shop") {
@@ -40,30 +54,20 @@ const Shop = () => {
     } else if (categoryId) {
       dispatch(setCategory(categoryId));
     }
-  }, [categoryId, dispatch, location.pathname]);
+    dispatch(setProductList([]));
+    setOffset(0);
+  }, [dispatch, location.pathname, categoryId, gender]);
 
   useEffect(() => {
-    const params = {
-      category: categoryId || null,
-      gender: gender || null,
-      sort: currentSort,
-      filter: currentFilter,
-      offset: (currentPage - 1) * productsPerPage,
-      limit: productsPerPage,
-    };
-    dispatch(fetchProducts(params));
-  }, [
-    dispatch,
-    gender,
-    categoryId,
-    currentSort,
-    currentFilter,
-    currentPage,
-    location.pathname,
-  ]);
+    if (offset === 0) {
+      fetchMoreProducts();
+    }
+  }, [fetchMoreProducts, offset]);
 
   const handleSortChange = (e) => {
     dispatch(setSort(e.target.value));
+    dispatch(setProductList([]));
+    setOffset(0);
   };
 
   const handleFilterChange = (e) => {
@@ -72,9 +76,10 @@ const Shop = () => {
 
   const applyFilter = () => {
     dispatch(setFilter(localFilter));
+    dispatch(setProductList([]));
+    setOffset(0);
   };
 
-  // Top 5 kategorileri rating'e göre sırala
   const topCategories = [...categories]
     .sort((a, b) => b.rating - a.rating)
     .slice(0, 5);
@@ -107,7 +112,6 @@ const Shop = () => {
             </div>
           </div>
 
-          {/* Kategori Kartları */}
           <div className="bg-[#FAFAFA]">
             <div className="grid grid-cols-5 gap-4 mb-8 w-[1400px] mx-auto pb-12 max-sm:grid-cols-1 max-sm:w-full max-sm:gap-y-4">
               {topCategories.map((category) => (
@@ -131,10 +135,9 @@ const Shop = () => {
             </div>
           </div>
 
-          {/* Filtreler ve görünüm seçenekleri */}
           <div className="flex justify-between items-center mb-8 w-[1400px] mx-auto max-sm:w-full max-sm:flex-col max-sm:items-center max-sm:gap-4">
             <p className="max-sm:text-xs">
-              {productFetchState === "FETCHED"
+              {productFetchState !== "FETCHING"
                 ? `Showing ${products.length} of ${total} results`
                 : "Loading products..."}
             </p>
@@ -166,12 +169,17 @@ const Shop = () => {
             </div>
           </div>
 
-          {/* Ürün grid'i */}
-          {productFetchState === "FETCHING" ? (
-            <div className="flex justify-center items-center h-64">
-              <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
-            </div>
-          ) : (
+          <InfiniteScroll
+            dataLength={products.length}
+            next={fetchMoreProducts}
+            hasMore={products.length < total}
+            loader={<h4>Loading...</h4>}
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
+          >
             <div className="grid grid-cols-4 gap-8 max-md:grid-cols-2 max-sm:grid-cols-1 w-[1400px] mx-auto max-sm:w-full">
               {products.map((product) => (
                 <ProductCard
@@ -190,46 +198,7 @@ const Shop = () => {
                 />
               ))}
             </div>
-          )}
-
-          {/* Sayfalama */}
-          {productFetchState === "FETCHED" && (
-            <div className="flex justify-center my-12 max-sm:flex-wrap max-sm:gap-2">
-              <button
-                className="px-5 py-4 border max-sm:px-3 max-sm:py-2 max-sm:text-sm"
-                onClick={() => setCurrentPage(1)}
-                disabled={currentPage === 1}
-              >
-                First
-              </button>
-              <button
-                className="px-4 py-4 border max-sm:px-3 max-sm:py-2 max-sm:text-sm"
-                onClick={() => setCurrentPage(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                Previous
-              </button>
-              <button className="px-4 py-4 border bg-[#23A6F0] text-white max-sm:px-3 max-sm:py-2 max-sm:text-sm">
-                {currentPage}
-              </button>
-              <button
-                className="px-4 py-4 border max-sm:px-3 max-sm:py-2 max-sm:text-sm"
-                onClick={() => setCurrentPage(currentPage + 1)}
-                disabled={currentPage === Math.ceil(total / productsPerPage)}
-              >
-                Next
-              </button>
-              <button
-                className="px-5 py-4 border max-sm:px-3 max-sm:py-2 max-sm:text-sm"
-                onClick={() =>
-                  setCurrentPage(Math.ceil(total / productsPerPage))
-                }
-                disabled={currentPage === Math.ceil(total / productsPerPage)}
-              >
-                Last
-              </button>
-            </div>
-          )}
+          </InfiniteScroll>
         </section>
 
         <Companies />

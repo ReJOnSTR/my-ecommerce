@@ -64,7 +64,9 @@ export default function productReducer(state = initialState, action) {
     case FETCH_PRODUCTS_SUCCESS:
       return {
         ...state,
-        productList: action.payload.products,
+        productList: action.payload.isLoadMore
+          ? [...state.productList, ...action.payload.products]
+          : action.payload.products,
         total: action.payload.total,
         productFetchState: "FETCHED",
         productError: null,
